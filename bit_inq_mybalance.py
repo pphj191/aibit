@@ -22,7 +22,7 @@ def get_balance(using_market):
 
     res = requests.get(server_url + "/v1/accounts", headers=headers)
 
-    print((res.json()[1]))
+    # print((res.json()[1]))
     # {'currency': 'ETH', 'balance': '0.02706605', 'locked': '0.0', 'avg_buy_price': '3813018.0106', 'avg_buy_price_modified': False, 'unit_currency': 'KRW'}
     
     # KRW를 따로 저장

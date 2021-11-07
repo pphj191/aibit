@@ -5,9 +5,9 @@ import hashlib
 from urllib.parse import urlencode
 
 import requests
-access_key = os.environ['UPBIT_OPEN_API_ACCESS_KEY']
-secret_key = os.environ['UPBIT_OPEN_API_SECRET_KEY']
-server_url = os.environ['UPBIT_OPEN_API_SERVER_URL']
+access_key = os.environ['UPBIT_ACCESS_KEY']
+secret_key = os.environ['UPBIT_SECRET_KEY']
+server_url = "https://api.upbit.com/"
 
 def buy(currency,volume,price):
     #사기

@@ -1,5 +1,11 @@
 
-import bitbuy
+import time
+import rebalance
 
-bitbuy.graphshow()
-print("end")
+while(1):
+    try:
+        rebalance.activate(["ETC", ])
+        time.sleep(5)
+    except KeyboardInterrupt:
+        print("finish")
+        break
