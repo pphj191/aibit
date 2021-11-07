@@ -1,6 +1,7 @@
 
-import bit_inq_mybalance, bit_buysell
+import bit_inq_mybalance #, bit_buysell
 import bit_inq_price
+import telegram_aibit
 
 # 5초에 한번씩 실행될것
 
@@ -8,7 +9,8 @@ import bit_inq_price
 using_market = ["ETC", ]
 
 # 내정보 가져오기 >> 설정금액, 가상금액 [{'currency':'ETH', 'balance':300} , {}]
-coins_now, KRW_balance = bit_inq_mybalance.get_balance(using_market)
+# coins_now, KRW_balance = bit_inq_mybalance.get_balance(using_market)  #*****env 필요
+coins_now, KRW_balance = bit_inq_mybalance.get_balance_test(using_market)  #*****env 필요
 
 # 현재가 가져오기
 for coin in coins_now:
@@ -18,17 +20,21 @@ for coin in coins_now:
 # ETH balance - KRW balance(가상 balance) 차이가 10000원 나면 매수매도1호가로 5000원 매매
 # if 매수1호가Xbalance - KRW balance > 10000
 #KRW balance는 DB로 저장할까? 일단 한 코인만 할까? << 한코인만
-if coins_now[0]['bid_price']*coins_now[0]['balance'] - KRW_balance >= 10000 : #코인이 KRW보다 더크면 팔자(바로팔게 매수호가 기준)
+if float(coins_now[0]['bid_price'])*float(coins_now[0]['balance']) - float(KRW_balance) >= 10000 : #코인이 KRW보다 더크면 팔자(바로팔게 매수호가 기준)
     #매도
     volume = round(10000/coins_now[0]['bid_price'], 4)
-    bit_buysell.sell(coins_now[0]['currency'], volume, coins_now[0]['bid_price'])
+    # bit_buysell.sell(coins_now[0]['currency'], volume, coins_now[0]['bid_price'])
     
     #telegram 연락
+    telegram_aibit.send("Sell // " + "시세="+str(coins_now[0]['bid_price']))
 
-elif coins_now[0]['ask_price']*coins_now[0]['balance'] - KRW_balance <= -10000 : #코인이 KRW보다 더크면 팔자(바로팔게 매수호가 기준)
+elif float(coins_now[0]['ask_price'])*float(coins_now[0]['balance']) - float(KRW_balance) <= -10000 : #코인이 KRW보다 더크면 팔자(바로팔게 매수호가 기준)
     #매수
     volume = round(10000/coins_now[0]['ask_price'], 4)
-    bit_buysell.buy(coins_now[0]['currency'], volume, coins_now[0]['ask_price'])
+    # bit_buysell.buy(coins_now[0]['currency'], volume, coins_now[0]['ask_price'])
+
+    #telegram
+    telegram_aibit.send("Buy // " + "시세="+str(coins_now[0]['ask_price']))
 
 else :
     #넘어가기

@@ -37,5 +37,20 @@ def get_balance(using_market):
 
     return coins_now, KRW_balance
 
+def get_balance_test(using_market):
+    res_json=[{'currency': 'KRW', 'balance': '200000', 'locked': '0.0', 'avg_buy_price': '3813018.0106', 'avg_buy_price_modified': False, 'unit_currency': 'KRW'},{'currency': 'ETC', 'balance': '0.02706605', 'locked': '0.0', 'avg_buy_price': '3813018.0106', 'avg_buy_price_modified': False, 'unit_currency': 'KRW'}]
+    
+    # KRW를 따로 저장
+    KRW_balance = 500000
+
+    # using_market의 순서대로 balance를 줘야함.
+    coins_now = []
+    for currency in using_market:
+        for dic_currency in res_json:
+            if dic_currency['currency'] == currency :
+                coins_now.append(dic_currency)
+
+    return coins_now, KRW_balance
+
 if __name__ == "__main__" :
     print(get_balance("ETH"))
